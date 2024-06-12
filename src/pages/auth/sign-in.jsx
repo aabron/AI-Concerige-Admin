@@ -6,13 +6,14 @@ import {
   Button,
   Typography,
 } from "@material-tailwind/react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from 'axios';
 
 export function SignIn() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const nav = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -24,7 +25,9 @@ export function SignIn() {
         password: password,
       });
       console.log(response.data);
-      // Handle successful login (e.g., storing token, redirecting, etc.)
+      //handle successful login (e.g., storing token, redirecting, etc.)
+      localStorage.setItem('token', response.data.token);
+      nav('/dashboard/home');
     } catch (error) {
       console.error(error);
       setError('Invalid email or password.');
@@ -126,10 +129,6 @@ export function SignIn() {
                 </defs>
               </svg>
               <span>Sign in With Google</span>
-            </Button>
-            <Button size="lg" color="white" className="flex items-center gap-2 justify-center shadow-md" fullWidth>
-              <img src="/img/twitter-logo.svg" height={24} width={24} alt="" />
-              <span>Sign in With Twitter</span>
             </Button>
           </div>
           <Typography variant="paragraph" className="text-center text-blue-gray-500 font-medium mt-4">

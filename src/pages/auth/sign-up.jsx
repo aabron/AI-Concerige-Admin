@@ -8,6 +8,7 @@ import {
 } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 export function SignUp() {
   const [username, setUsername] = useState('');
@@ -17,6 +18,7 @@ export function SignUp() {
   const [isBusiness, setIsBusiness] = useState(false);
   const [isHotelOwner, setIsHotelOwner] = useState(false);
   const [error, setError] = useState('');
+  const nav = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -39,7 +41,9 @@ export function SignUp() {
         password: password,
         business: isBusiness ? 'business' : 'hotel',
       });
-      console.log(response.data);
+      localStorage.setItem('token', response.data.token);
+      nav('/dashboard');
+      nav('/dashboard/home');
     } catch (error) {
       setError(error.response.data.error)
       console.error(error);

@@ -6,7 +6,8 @@ import {
   ServerStackIcon,
   RectangleStackIcon,
 } from "@heroicons/react/24/solid";
-import { Home, Profile, Tables, Notifications } from "@/pages/dashboard";
+import { Home, Profile, Tables, Notifications} from "@/pages/dashboard";
+import AddBusiness from "./pages/dashboard/AddBusiness";
 import { SignIn, SignUp } from "@/pages/auth";
 
 const icon = {
@@ -31,9 +32,9 @@ export const routes = [
       },
       {
         icon: <TableCellsIcon {...icon} />,
-        name: "tables",
-        path: "/tables",
-        element: <Tables />,
+        name: "Add Business",
+        path: "/add_Business",
+        element: <AddBusiness />,
       },
       {
         icon: <InformationCircleIcon {...icon} />,
@@ -42,25 +43,7 @@ export const routes = [
         element: <Notifications />,
       },
     ],
-  },
-  {
-    title: "auth pages",
-    layout: "auth",
-    pages: [
-      {
-        icon: <ServerStackIcon {...icon} />,
-        name: "sign in",
-        path: "/sign-in",
-        element: <SignIn />,
-      },
-      {
-        icon: <RectangleStackIcon {...icon} />,
-        name: "sign up",
-        path: "/sign-up",
-        element: <SignUp />,
-      },
-    ],
-  },
+  }
 ];
 
 export default routes;
