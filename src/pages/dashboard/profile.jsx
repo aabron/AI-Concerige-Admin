@@ -35,11 +35,11 @@ export function Profile() {
         method: 'GET',
         url: 'https://ai-concierge-main-0b4b3d25a902.herokuapp.com/api/getUserProfile/',
         headers: {
-            'Authorization': `Token ${localStorage.getItem('token')}`
+          'Authorization': `Token ${localStorage.getItem('token')}`
         },
         withCredentials: true,
-      }) 
-      .then(response => {
+      })
+        .then(response => {
           // console.log('Got data successfully:', response.data[0]);
           setEmailSettings([
             {
@@ -56,12 +56,30 @@ export function Profile() {
             },
           ])
           setProfileData(response.data[0])
-      })
-      .catch(error => {
+        })
+        .catch(error => {
           console.error('Error adding business:', error);
-      });
+        });
+    };
+    const getUserData = async () => {
+      axios({
+        method: 'GET',
+        url: 'https://ai-concierge-main-0b4b3d25a902.herokuapp.com/api/getUserInfo/',
+        headers: {
+          'Authorization': `Token ${localStorage.getItem('token')}`
+        },
+        withCredentials: true,
+      })
+        .then(response => {
+          console.log(response.data);
+          setUser(response.data);
+        })
+        .catch(error => {
+          console.error('Error getting user:', error);
+        });
     };
 
+    getUserData();
     getProfileData();
   }, [])
 
@@ -74,35 +92,35 @@ export function Profile() {
           : item
       )
     );
-    if(label === "Email Me When Clicked") {
+    if (label === "Email Me When Clicked") {
       const response = await axios({
         method: 'POST',
         url: 'https://ai-concierge-main-0b4b3d25a902.herokuapp.com/api/updateUserProfile/',
         headers: {
-            'Authorization': `Token ${localStorage.getItem('token')}`,
-            'Content-Type': 'application/json',
+          'Authorization': `Token ${localStorage.getItem('token')}`,
+          'Content-Type': 'application/json',
         },
         data: { email_when_clicked: checked },
         withCredentials: true,
       });
-    } else if(label === "Email Me When Recommended") {
+    } else if (label === "Email Me When Recommended") {
       const response = await axios({
         method: 'POST',
         url: 'https://ai-concierge-main-0b4b3d25a902.herokuapp.com/api/updateUserProfile/',
         headers: {
-            'Authorization': `Token ${localStorage.getItem('token')}`,
-            'Content-Type': 'application/json',
+          'Authorization': `Token ${localStorage.getItem('token')}`,
+          'Content-Type': 'application/json',
         },
         data: { email_when_recommended: checked },
         withCredentials: true,
       });
-    } else if(label === "Email Me When Recommended in an Itinerary") {
+    } else if (label === "Email Me When Recommended in an Itinerary") {
       const response = await axios({
         method: 'POST',
         url: 'https://ai-concierge-main-0b4b3d25a902.herokuapp.com/api/updateUserProfile/',
         headers: {
-            'Authorization': `Token ${localStorage.getItem('token')}`,
-            'Content-Type': 'application/json',
+          'Authorization': `Token ${localStorage.getItem('token')}`,
+          'Content-Type': 'application/json',
         },
         data: { email_when_itinerary_recommended: checked },
         withCredentials: true,
@@ -142,13 +160,13 @@ export function Profile() {
               />
               <div>
                 <Typography variant="h5" color="blue-gray" className="mb-1">
-                  {profileData.user} {profileData.user__last_name}
+                  {user?.username}
                 </Typography>
                 <Typography
                   variant="small"
                   className="font-normal text-blue-gray-600"
                 >
-                  {profileData.emailSettings}
+                  {user?.email}
                 </Typography>
               </div>
             </div>
@@ -159,25 +177,25 @@ export function Profile() {
                 Platform Settings
               </Typography>
               <div className="flex flex-col gap-12">
-                  <div>
-                    <Typography className="mb-4 block text-xs font-semibold uppercase text-blue-gray-500">
-                      Account
-                    </Typography>
-                    <div className="flex flex-col gap-6">
-                      {emailSettings.map(({ checked, label }) => (
-                        <Switch
-                          key={label}
-                          id={label}
-                          label={label}
-                          defaultChecked={checked}
-                          labelProps={{
-                            className: "text-sm font-normal text-blue-gray-500 ml-10",
-                          }}
-                          onChange={(e) => handleChange(label, e.target.checked)}
-                        />
-                      ))}
-                    </div>
+                <div>
+                  <Typography className="mb-4 block text-xs font-semibold uppercase text-blue-gray-500">
+                    Account
+                  </Typography>
+                  <div className="flex flex-col gap-6">
+                    {emailSettings.map(({ checked, label }) => (
+                      <Switch
+                        key={label}
+                        id={label}
+                        label={label}
+                        defaultChecked={checked}
+                        labelProps={{
+                          className: "text-sm font-normal text-blue-gray-500 ml-10",
+                        }}
+                        onChange={(e) => handleChange(label, e.target.checked)}
+                      />
+                    ))}
                   </div>
+                </div>
               </div>
             </div>
             <div className="col-span-2">
