@@ -65,18 +65,64 @@ export function Profile() {
     getProfileData();
   }, [])
 
-  useEffect(() => {
-    const response = axios({
-      method: 'POST',
-      url: 'https://ai-concierge-main-0b4b3d25a902.herokuapp.com/api/updateUserProfile/',
-      headers: {
-          'Authorization': `Token ${localStorage.getItem('token')}`,
-          'Content-Type': 'application/json',
-      },
-      data: { email_when_clicked: emailSettings[0].checked, email_when_recommended: emailSettings[1].checked, email_when_itinerary_recommended: emailSettings[2].checked },
-      withCredentials: true,
-    });
-  }, [emailSettings]);
+  const handleChange = async (label, checked) => {
+    console.log(label, checked);
+    setEmailSettings((prev) =>
+      prev.map((item) =>
+        item.label === label
+          ? { ...item, checked: checked }
+          : item
+      )
+    );
+    if(label === "Email Me When Clicked") {
+      const response = await axios({
+        method: 'POST',
+        url: 'https://ai-concierge-main-0b4b3d25a902.herokuapp.com/api/updateUserProfile/',
+        headers: {
+            'Authorization': `Token ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json',
+        },
+        data: { email_when_clicked: checked },
+        withCredentials: true,
+      });
+    } else if(label === "Email Me When Recommended") {
+      const response = await axios({
+        method: 'POST',
+        url: 'https://ai-concierge-main-0b4b3d25a902.herokuapp.com/api/updateUserProfile/',
+        headers: {
+            'Authorization': `Token ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json',
+        },
+        data: { email_when_recommended: checked },
+        withCredentials: true,
+      });
+    } else if(label === "Email Me When Recommended in an Itinerary") {
+      const response = await axios({
+        method: 'POST',
+        url: 'https://ai-concierge-main-0b4b3d25a902.herokuapp.com/api/updateUserProfile/',
+        headers: {
+            'Authorization': `Token ${localStorage.getItem('token')}`,
+            'Content-Type': 'application/json',
+        },
+        data: { email_when_itinerary_recommended: checked },
+        withCredentials: true,
+      });
+    }
+
+  };
+
+  // useEffect(() => {
+  //   const response = axios({
+  //     method: 'POST',
+  //     url: 'https://ai-concierge-main-0b4b3d25a902.herokuapp.com/api/updateUserProfile/',
+  //     headers: {
+  //         'Authorization': `Token ${localStorage.getItem('token')}`,
+  //         'Content-Type': 'application/json',
+  //     },
+  //     data: { email_when_clicked: emailSettings[0].checked, email_when_recommended: emailSettings[1].checked, email_when_itinerary_recommended: emailSettings[2].checked },
+  //     withCredentials: true,
+  //   });
+  // }, [emailSettings[0].checked, emailSettings[1].checked, emailSettings[2].checked]);
 
   return (
     <>
@@ -127,15 +173,7 @@ export function Profile() {
                           labelProps={{
                             className: "text-sm font-normal text-blue-gray-500 ml-10",
                           }}
-                          onChange={(e) => {
-                            setEmailSettings((prev) =>
-                              prev.map((item) =>
-                                item.label === label
-                                  ? { ...item, checked: e.target.checked }
-                                  : item
-                              )
-                            );
-                          }}
+                          onChange={(e) => handleChange(label, e.target.checked)}
                         />
                       ))}
                     </div>
