@@ -37,7 +37,7 @@ import {
     useEffect(() => {
         const getBusinessBanner = async () => {
             try {
-                const response = await axios.get("http://127.0.0.1:8000/api/getBusinessBanner/", {
+                const response = await axios.get("https://ai-concierge-main-0b4b3d25a902.herokuapp.com/api/getBusinessBanner/", {
                     headers: {
                         "Authorization": `Token ${localStorage.getItem('token')}`,
                     },
@@ -60,11 +60,13 @@ import {
               <div className="flex items-center gap-6">
                 <Typography>
                   <h1 className="text-2xl font-semibold text-black">Add Your Ad Banner</h1>
+                  <p className="text-base text-blue-gray-400">Ad Banners are only available in the x plan. </p>
                 </Typography>
               </div>
             </div>
             <div className="grid-cols-1 mb-12 grid gap-12 px-4 lg:grid-cols-2 xl:grid-cols-3">
-              <div className="flex flex-col items-center h-full justify-center">
+              <div className="flex flex-col items-center h-full justify-center px-2 py-3 border border-blue-gray-100 rounded-lg shadow-md">
+                <h5 className="text-lg text-black text-center mb-12 ">Here you can upload the ad banner that will be placed at the bottom of any Mobile Dynamic Dispaly</h5>
                 <input
                   type="file"
                   onChange={handleFileChange}
@@ -76,26 +78,27 @@ import {
                 >
                   Upload
                 </button>
-              </div>
-              <div className="col-span-2">
-                <div className="flex flex-col w-full h-auto justify-center items-center">
-                    <h1 className="text-2xl font-semibold text-black">Current Ad Banner</h1>
-                    {businessBanner ? (
-                        <img
-                            src={businessBanner.image}
-                            alt="Ad Banner"
-                            className="w-auto h-20"
-                        />
-                    ) : (
-                    selectedFile ? (
+                {selectedFile ? (
                         <img
                             src={URL.createObjectURL(selectedFile)}
                             alt="Ad Banner"
-                            className="w-auto h-20"
+                            className="w-auto max-h-[550px] rounded-lg mt-5"
                         />
                     ) : (
-                        <img src="https://media.istockphoto.com/id/1147544807/vector/thumbnail-image-vector-graphic.jpg?s=612x612&w=0&k=20&c=rnCKVbdxqkjlcs3xH87-9gocETqpspHFXu5dIGB4wuM=" alt="Ad Banner" className="w-auto h-72" />
-                    ))}
+                        <img src="https://media.istockphoto.com/id/1147544807/vector/thumbnail-image-vector-graphic.jpg?s=612x612&w=0&k=20&c=rnCKVbdxqkjlcs3xH87-9gocETqpspHFXu5dIGB4wuM=" alt="Ad Banner" className="w-auto max-w-[540px] max-h-[225px] rounded-lg mt-5" />
+                )};
+              </div>
+              <div className="col-span-2 px-2 py-3 border border-blue-gray-100 rounded-lg shadow-md">
+                <div className="flex flex-col w-full h-auto justify-center items-center">
+                    <h1 className="text-2xl font-semibold text-black">Current Ad Banner</h1>
+                    <h5 className="text-lg text-black text-center mb-5">This is the current ad banner that will be placed at the bottom of any Mobile Dynamic Dispaly</h5>
+                    {businessBanner && (
+                        <img
+                            src={businessBanner.image}
+                            alt="Ad Banner"
+                            className="w-auto max-h-[550px] rounded-lg"
+                        />
+                    )}
                 </div>
               </div>
             </div>

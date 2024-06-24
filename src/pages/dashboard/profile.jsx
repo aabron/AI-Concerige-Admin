@@ -40,7 +40,7 @@ export function Profile() {
         withCredentials: true,
       }) 
       .then(response => {
-          console.log('Got data successfully:', response.data[0]);
+          // console.log('Got data successfully:', response.data[0]);
           setEmailSettings([
             {
               checked: response.data[0].email_when_clicked,
@@ -61,19 +61,23 @@ export function Profile() {
           console.error('Error adding business:', error);
       });
     };
-    const getUser = async () => {
-      const response = await axios.get('https://ai-concierge-main-0b4b3d25a902.herokuapp.com/api/getUser/', {
-        headers: {
-          'Authorization': `Token ${localStorage.getItem('token')}`
-        },
-        withCredentials: true
-      });
-      setUser(response.data);
-      console.log(response.data)
-    };
-    getUser();
+
     getProfileData();
   }, [])
+
+  useEffect(() => {
+    const response = axios({
+      method: 'POST',
+      url: 'http://127.0.0.1:8000/api/updateUserProfile/',
+      headers: {
+          'Authorization': `Token ${localStorage.getItem('token')}`,
+          'Content-Type': 'application/json',
+      },
+      data: { email_when_clicked: emailSettings[0].checked, email_when_recommended: emailSettings[1].checked, email_when_itinerary_recommended: emailSettings[2].checked },
+      withCredentials: true,
+    });
+  }, [emailSettings]);
+
   return (
     <>
       <div className="relative mt-8 h-72 w-full overflow-hidden rounded-xl bg-[url('/img/background-image.png')] bg-cover	bg-center">
@@ -122,6 +126,15 @@ export function Profile() {
                           defaultChecked={checked}
                           labelProps={{
                             className: "text-sm font-normal text-blue-gray-500 ml-10",
+                          }}
+                          onChange={(e) => {
+                            setEmailSettings((prev) =>
+                              prev.map((item) =>
+                                item.label === label
+                                  ? { ...item, checked: e.target.checked }
+                                  : item
+                              )
+                            );
                           }}
                         />
                       ))}

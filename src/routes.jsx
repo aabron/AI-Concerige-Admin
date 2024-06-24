@@ -5,6 +5,9 @@ import {
   InformationCircleIcon,
   ServerStackIcon,
   RectangleStackIcon,
+  BuildingStorefrontIcon,
+  DocumentIcon,
+  PencilSquareIcon
 } from "@heroicons/react/24/solid";
 import { Home, Profile, Tables, Notifications} from "@/pages/dashboard";
 import AddBusiness from "./pages/dashboard/AddBusiness";
@@ -25,30 +28,49 @@ export const routes = [
         name: "dashboard",
         path: "/home",
         element: <Home />,
+        disabled: false,
       },
       {
         icon: <UserCircleIcon {...icon} />,
         name: "profile",
         path: "/profile",
         element: <Profile />,
+        disabled: false,
       },
       {
-        icon: <TableCellsIcon {...icon} />,
+        icon: localStorage.getItem('token').length > 0 ? <PencilSquareIcon {...icon} /> : <TableCellsIcon {...icon} />,
         name: localStorage.getItem('token').length > 0 ? "Edit Business" : "Add Business",
         path: localStorage.getItem('token').length > 0 ? "/EditBusiness" : "/AddBusiness",
         element: localStorage.getItem('token').length > 0 ? <EditBusiness/> : <AddBusiness />,
+        disabled: false,
       },
       {
         icon: <TableCellsIcon {...icon} />,
         name: "Add Business",
         path: "/AddBusiness",
         element: <AddBusiness />,
+        disabled: false,
       },
       {
         icon: <RectangleStackIcon {...icon} />,
         name: "Ad Banner",
         path: "/adBanner",
         element: <AddBanner />,
+        disabled: false,
+      },
+      {
+        icon: <BuildingStorefrontIcon {...icon} />,
+        name: "Billing",
+        path: "/Billing",
+        element: <AddBanner />,
+        disabled: true,
+      },
+      {
+        icon: <DocumentIcon {...icon} />,
+        name: "Documentation",
+        path: "/Docs",
+        element: <AddBanner />,
+        disabled: true,
       },
     ],
   }

@@ -60,9 +60,25 @@ export function Sidenav({ brandImg, brandName, routes }) {
                 </Typography>
               </li>
             )}
-            {pages.map(({ icon, name, path }) => (
+            {pages.map(({ icon, name, path, disabled }) => (
               <li key={name}>
-                <NavLink to={`/${layout}${path}`}>
+                {disabled ? (
+                  <Button
+                    color={"white"}
+                    className="flex items-center gap-4 px-4 capitalize disabled:text-gray-700"
+                    fullWidth
+                    disabled={disabled}
+                  >
+                    {icon}
+                    <Typography
+                      color="inherit"
+                      className="font-medium capitalize"
+                    >
+                      {name}
+                    </Typography>
+                  </Button>
+                ) : (
+                  <NavLink to={`/${layout}${path}`}>
                   {({ isActive }) => (
                     <Button
                       variant={isActive ? "gradient" : "text"}
@@ -73,8 +89,9 @@ export function Sidenav({ brandImg, brandName, routes }) {
                           ? "white"
                           : "blue-gray"
                       }
-                      className="flex items-center gap-4 px-4 capitalize"
+                      className="flex items-center gap-4 px-4 capitalize disabled:text-gray-700"
                       fullWidth
+                      disabled={disabled}
                     >
                       {icon}
                       <Typography
@@ -86,6 +103,7 @@ export function Sidenav({ brandImg, brandName, routes }) {
                     </Button>
                   )}
                 </NavLink>
+                )}
               </li>
             ))}
           </ul>

@@ -52,7 +52,7 @@ export function Home() {
     getLogData();
   }, []);
 
-  // const itineraryChartData = prepareChartData(allTimeLogData, 'itinerary_recommendation');
+  const itineraryChartData = prepareChartData(allTimeLogData, 'itinerary_recommendation');
   const recommendationChartData = prepareChartData(allTimeLogData, 'recommendation');
   const clickChartData = prepareChartData(allTimeLogData, 'click');
   // console.log(todayLogData);
@@ -129,8 +129,8 @@ export function Home() {
         }
       </div>
       <div className="mb-6 grid grid-cols-1 gap-y-12 gap-x-6 md:grid-cols-2 xl:grid-cols-3">
-        {/* <StatisticsChart
-          color="blue"
+        <StatisticsChart
+          color="white"
           chart={itineraryChartData}
           title="All-time Itinerary Recommendations"
           description="This chart shows all-time data for itinerary recommendations."
@@ -143,7 +143,7 @@ export function Home() {
               &nbsp;Updated just now
             </Typography>
           }
-        /> */}
+        />
         <StatisticsChart
           color="white"
           chart={recommendationChartData}
