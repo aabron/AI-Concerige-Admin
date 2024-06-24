@@ -68,7 +68,7 @@ export function Profile() {
   useEffect(() => {
     const response = axios({
       method: 'POST',
-      url: 'http://127.0.0.1:8000/api/updateUserProfile/',
+      url: 'https://ai-concierge-main-0b4b3d25a902.herokuapp.com/api/updateUserProfile/',
       headers: {
           'Authorization': `Token ${localStorage.getItem('token')}`,
           'Content-Type': 'application/json',
