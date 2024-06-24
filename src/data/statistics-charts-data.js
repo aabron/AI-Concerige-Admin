@@ -27,7 +27,7 @@ const websiteViewsChart = {
 
 const dailySalesChart = {
   type: "line",
-  height: 220,
+  height: 200,
   series: [
     {
       name: "Sales",

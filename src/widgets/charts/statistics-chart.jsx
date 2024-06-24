@@ -9,6 +9,7 @@ import PropTypes from "prop-types";
 import Chart from "react-apexcharts";
 
 export function StatisticsChart({ color, chart, title, description, footer }) {
+
   return (
     <Card className="border border-blue-gray-100 shadow-sm">
       <CardHeader variant="gradient" color={color} floated={false} shadow={false}>

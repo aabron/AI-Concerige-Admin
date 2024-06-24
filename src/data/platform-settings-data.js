@@ -4,35 +4,18 @@ export const platformSettingsData = [
     options: [
       {
         checked: true,
-        label: "Email me when someone follows me",
+        label: "Email me when my business gets recommended",
       },
       {
         checked: false,
-        label: "Email me when someone answers on my post",
+        label: "Email me when my business gets clicked",
       },
       {
         checked: true,
-        label: "Email me when someone mentions me",
+        label: "Email me when my business gets suggested in an itinerary",
       },
     ],
-  },
-  {
-    title: "application",
-    options: [
-      {
-        checked: false,
-        label: "New launches and projects",
-      },
-      {
-        checked: true,
-        label: "Monthly product updates",
-      },
-      {
-        checked: false,
-        label: "Subscribe to newsletter",
-      },
-    ],
-  },
+  }
 ];
 
 export default platformSettingsData;

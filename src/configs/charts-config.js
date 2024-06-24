@@ -38,7 +38,7 @@ export const chartsConfig = {
   },
   grid: {
     show: true,
-    borderColor: "#dddddd",
+    borderColor: "#37474f",
     strokeDashArray: 5,
     xaxis: {
       lines: {

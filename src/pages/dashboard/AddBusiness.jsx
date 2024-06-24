@@ -6,7 +6,7 @@ import Tooltip from '@mui/material/Tooltip';
 import { FaInfoCircle } from "react-icons/fa";
 import PreviewPage from '@/pages/dashboard/preview/PreviewPage';
 import 'react-loader-spinner';
-import { Circles } from 'react-loader-spinner';
+import { ColorRing } from 'react-loader-spinner';
 import * as Yup from 'yup';
 import { typeOptions, subTypeOptions, dietaryOptions, 
     groupSizeOptions, promoOptions, specialOptions, 
@@ -133,7 +133,7 @@ const AddBusiness = ({ logout }) => {
                 >
                         <div className="flex flex-col items-center justify-center h-40 w-80 text-center">
                             <p>Adding Business....</p>
-                            <Circles color="#0066FF" height={90} width={90} />
+                            <ColorRing color="#0066FF" height={90} width={90} />
                         </div>
                 </Modal>
                 <Modal
@@ -186,8 +186,8 @@ const AddBusiness = ({ logout }) => {
                                 business_barcode: ''
                             }}
                             onSubmit={handleSubmit}
-                            // validator={() => ({})}
-                            validationSchema={validationSchema}
+                            validator={() => ({})}
+                            // validationSchema={validationSchema}
                             >
                             {({ values }) => (
                             <Form className="mt-8 space-y-6" encType='multipart/form-data' onChange={() => handleFormChange(values)}>

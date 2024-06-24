@@ -1,55 +1,44 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Formik, Form, Field } from 'formik';
 import axios from 'axios';
 import Modal from 'react-modal';
 import Tooltip from '@mui/material/Tooltip';
 import { FaInfoCircle } from "react-icons/fa";
-import PreviewPage from '../PreviewPage';
+import PreviewPage from './preview/PreviewPage';
 import 'react-loader-spinner';
-import { Circles } from 'react-loader-spinner';
-import AdminPortalNav from '../AdminPortalNav';
+import { ColorRing } from 'react-loader-spinner';
 import * as Yup from 'yup';
 import { typeOptions, subTypeOptions, dietaryOptions, 
     groupSizeOptions, promoOptions, specialOptions, 
     awardOptions, budgetOptions, atmosphereOptions, 
-    restaurantTypeOptions} from '../arrays/Arrays';
-import { DynamicFormDropdowns, DynamicFormDropdowns2, DynamicFormDropdowns3} from '../DynamicFormDropdowns';
+    restaurantTypeOptions} from './arrays/Arrays';
+import { DynamicFormDropdowns, DynamicFormDropdowns2, DynamicFormDropdowns3 } from '../../configs/DynamicFormDropdowns';
 
-const EditBusiness = ({ logout, response }) => {
-
+const EditBusiness = () => {
     axios.defaults.withCredentials = true;
     const [formData, setFormData] = React.useState({});
     const [success, setSuccess] = React.useState(false);
     const [fail, setFail] = React.useState(false);
     const [loading, setLoading] = React.useState(false);
-    const [editPage, setEditPage] = React.useState(false);
     const [count, setCount] = React.useState(0);
     const dates = ['3/1/24', '3/2/24', '3/3/24', '3/4/24', '3/5/24', '3/6/24', '3/7/24', '3/8/24', '3/9/24', '3/10/24', '3/11/24', '3/12/24', '3/13/24', '3/14/24', '3/15/24', '3/16/24', '3/17/24', '3/18/24', '3/19/24', '3/20/24', '3/21/24', '3/22/24', '3/23/24', '3/24/24', '3/25/24', '3/26/24', '3/27/24', '3/28/24', '3/29/24', '3/30/24', '4/1/24', '4/1/24', '4/2/24', '4/3/24', '4/4/24', '4/5/24', '4/6/24', '4/7/24', '4/8/24', '4/9/24', '4/10/24', '4/11/24', '4/12/24', '4/13/24', '4/14/24', '4/15/24', '4/16/24', '4/17/24', '4/18/24', '4/19/24', '4/20/24', '4/21/24', '4/22/24', '4/23/24', '4/24/24', '4/25/24', '4/26/24', '4/27/24', '4/28/24', '4/29/24', '4/30/24'];
 
-    // console.log('User business data:', response.data);
-    setFormData({
-        business_tags: response.data.business_tags,
-        business_name: response.data.business_name,
-        business_rating: response.data.business_rating,
-        business_place_id: response.data.business_place_id,
-        business_address: response.data.business_address,
-        business_pictures: response.data.business_pictures,
-        hours_of_operation: response.data.hours_of_operation,
-        business_barcode: response.data.business_barcode,
-        m_hours_of_operation: response.data.hours_of_operation["Monday"],
-        tu_hours_of_operation: response.data.hours_of_operation["Tuesday"],
-        w_hours_of_operation: response.data.hours_of_operation["Wednesday"],
-        th_hours_of_operation: response.data.hours_of_operation["Thursday"],
-        f_hours_of_operation: response.data.hours_of_operation["Friday"],
-        sa_hours_of_operation: response.data.hours_of_operation["Saturday"],
-        su_hours_of_operation: response.data.hours_of_operation["Sunday"],
-        walk_time: response.data.walk_time,
-        drive_time: response.data.drive_time,
-        transit_time: response.data.transit_time,
-        directions_url: response.data.directions_url,
-    });
+    useEffect(() => {
+        const getBusinessData = async () => {
+            const response = await axios.get('https://ai-concierge-main-0b4b3d25a902.herokuapp.com/api/getUserBusinessData/', {
+                headers: {
+                'Authorization': `Token ${localStorage.getItem('token')}`
+                },
+                withCredentials: true
+            });
+            // console.log('User business data:', response.data)
+            setFormData(response.data);
+            
+        };
+        getBusinessData();
+    }, []);
 
-    
+    // console.log('Form data:', formData[0])
 
     const handleFormChange = (values) => {
         // console.log('Form values:', values);
@@ -109,8 +98,7 @@ const EditBusiness = ({ logout, response }) => {
 
     return (
         <>
-        {!editPage ?  
-        <div className='grid grid-cols-2 bg-gray-50' >
+        <div className='grid grid-cols-[30%_70%] bg-gray-50' >
             
             <div className="min-h-screen flex items-center justify-center  py-12 px-4 sm:px-6 lg:px-8">
                 <Modal
@@ -121,7 +109,7 @@ const EditBusiness = ({ logout, response }) => {
                 >
                         <div className="flex flex-col items-center justify-center h-40 w-80 text-center">
                             <p>Adding Business....</p>
-                            <Circles color="#0066FF" height={90} width={90} />
+                            <ColorRing color="#0066FF" height={90} width={90} />
                         </div>
                 </Modal>
                 <Modal
@@ -152,25 +140,25 @@ const EditBusiness = ({ logout, response }) => {
                         
                         <Formik
                             initialValues={{
-                                business_tags: formData.business_tags,
-                                business_name: formData.business_name,
-                                business_rating: formData.business_rating,
-                                business_place_id: formData.business_place_id,
-                                business_address: formData.business_address,
-                                business_pictures: formData.business_pictures,
-                                hours_of_operation: formData.hours_of_operation,
-                                business_barcode: formData.business_barcode,
-                                m_hours_of_operation: formData.hours_of_operation["Monday"],
-                                tu_hours_of_operation: formData.hours_of_operation["Tuesday"],
-                                w_hours_of_operation: formData.hours_of_operation["Wednesday"],
-                                th_hours_of_operation: formData.hours_of_operation["Thursday"],
-                                f_hours_of_operation: formData.hours_of_operation["Friday"],
-                                sa_hours_of_operation: formData.hours_of_operation["Saturday"],
-                                su_hours_of_operation: formData.hours_of_operation["Sunday"],
-                                walk_time: formData.walk_time,
-                                drive_time: formData.drive_time,
-                                transit_time: formData.transit_time,
-                                directions_url: formData.directions_url,
+                                business_tags: formData[0]?.business_tags,
+                                business_name: formData[0]?.business_name,
+                                business_rating: formData[0]?.business_rating,
+                                business_place_id: formData[0]?.business_place_id,
+                                business_address: formData[0]?.business_address,
+                                business_pictures: formData[0]?.business_pictures,
+                                hours_of_operation: formData[0]?.hours_of_operation,
+                                business_barcode: formData[0]?.business_barcode,
+                                m_hours_of_operation: formData[0]?.hours_of_operation["Monday"],
+                                tu_hours_of_operation: formData[0]?.hours_of_operation["Tuesday"],
+                                w_hours_of_operation: formData[0]?.hours_of_operation["Wednesday"],
+                                th_hours_of_operation: formData[0]?.hours_of_operation["Thursday"],
+                                f_hours_of_operation: formData[0]?.hours_of_operation["Friday"],
+                                sa_hours_of_operation: formData[0]?.hours_of_operation["Saturday"],
+                                su_hours_of_operation: formData[0]?.hours_of_operation["Sunday"],
+                                walk_time: formData[0]?.walk_time,
+                                drive_time: formData[0]?.drive_time,
+                                transit_time: formData[0]?.transit_time,
+                                directions_url: formData[0]?.directions_url,
                             }}
                             onSubmit={handleSubmit}
                             validator={() => ({})}
@@ -430,7 +418,6 @@ const EditBusiness = ({ logout, response }) => {
             </div>
             
         </div>
-        : null}
         
         </>
     );

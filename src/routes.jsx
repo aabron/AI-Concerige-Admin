@@ -8,7 +8,9 @@ import {
 } from "@heroicons/react/24/solid";
 import { Home, Profile, Tables, Notifications} from "@/pages/dashboard";
 import AddBusiness from "./pages/dashboard/AddBusiness";
-import { SignIn, SignUp } from "@/pages/auth";
+import { useState } from "react";
+import EditBusiness from "./pages/dashboard/EditBusiness";
+import AddBanner from "./pages/dashboard/addBanner";
 
 const icon = {
   className: "w-5 h-5 text-inherit",
@@ -32,15 +34,21 @@ export const routes = [
       },
       {
         icon: <TableCellsIcon {...icon} />,
+        name: localStorage.getItem('token').length > 0 ? "Edit Business" : "Add Business",
+        path: localStorage.getItem('token').length > 0 ? "/EditBusiness" : "/AddBusiness",
+        element: localStorage.getItem('token').length > 0 ? <EditBusiness/> : <AddBusiness />,
+      },
+      {
+        icon: <TableCellsIcon {...icon} />,
         name: "Add Business",
-        path: "/add_Business",
+        path: "/AddBusiness",
         element: <AddBusiness />,
       },
       {
-        icon: <InformationCircleIcon {...icon} />,
-        name: "notifications",
-        path: "/notifications",
-        element: <Notifications />,
+        icon: <RectangleStackIcon {...icon} />,
+        name: "Ad Banner",
+        path: "/adBanner",
+        element: <AddBanner />,
       },
     ],
   }
