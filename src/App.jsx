@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate, redirect } from "react-router-dom";
 import { Dashboard, Auth } from "@/layouts";
 import ProtectedRoute from "@/protectected route/ProtectedRoute";
 import React, { useEffect } from "react";

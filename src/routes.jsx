@@ -11,13 +11,30 @@ import {
 } from "@heroicons/react/24/solid";
 import { Home, Profile, Tables, Notifications} from "@/pages/dashboard";
 import AddBusiness from "./pages/dashboard/AddBusiness";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import EditBusiness from "./pages/dashboard/EditBusiness";
 import AddBanner from "./pages/dashboard/addBanner";
+import axios from "axios";
 
 const icon = {
   className: "w-5 h-5 text-inherit",
 };
+
+// const [formData, setFormData] = useState({});
+
+
+  const getBusinessData = async () => {
+      const response = await axios.get('https://ai-concierge-main-0b4b3d25a902.herokuapp.com/api/getUserBusinessData/', {
+          headers: {
+          'Authorization': `Token ${localStorage.getItem('token')}`
+          },
+          withCredentials: true
+      });
+      // console.log('User business data:', response.data)
+      return response.data;
+      
+  };
+
 
 export const routes = [
   {
@@ -38,10 +55,10 @@ export const routes = [
         disabled: false,
       },
       {
-        icon: localStorage.getItem('token').length > 0 ? <PencilSquareIcon {...icon} /> : <TableCellsIcon {...icon} />,
-        name: localStorage.getItem('token').length > 0 ? "Edit Business" : "Add Business",
-        path: localStorage.getItem('token').length > 0 ? "/EditBusiness" : "/AddBusiness",
-        element: localStorage.getItem('token').length > 0 ? <EditBusiness/> : <AddBusiness />,
+        icon: getBusinessData() ? <PencilSquareIcon {...icon} /> : <TableCellsIcon {...icon} />,
+        name: getBusinessData() ? "Edit Business" : "Add Business",
+        path: getBusinessData() ? "/EditBusiness" : "/AddBusiness",
+        element: getBusinessData() ? <EditBusiness/> : <AddBusiness />,
         disabled: false,
       },
       {
