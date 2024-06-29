@@ -70,7 +70,7 @@ import {
                 <input
                   type="file"
                   onChange={handleFileChange}
-                  className="ml-10 mb-4 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className=" mb-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 />
                 <button
                   onClick={handleUpload}

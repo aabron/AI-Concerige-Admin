@@ -14,6 +14,7 @@ import AddBusiness from "./pages/dashboard/AddBusiness";
 import { useEffect, useState } from "react";
 import EditBusiness from "./pages/dashboard/EditBusiness";
 import AddBanner from "./pages/dashboard/addBanner";
+import Billing from "./pages/dashboard/billing";
 import axios from "axios";
 
 const icon = {
@@ -79,8 +80,8 @@ export const routes = [
         icon: <BuildingStorefrontIcon {...icon} />,
         name: "Billing",
         path: "/Billing",
-        element: <AddBanner />,
-        disabled: true,
+        element: <Billing />,
+        disabled: false,
       },
       {
         icon: <DocumentIcon {...icon} />,
