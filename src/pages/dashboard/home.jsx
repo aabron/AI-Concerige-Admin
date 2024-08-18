@@ -15,7 +15,7 @@ import {
 } from "@material-tailwind/react";
 import { StatisticsCard } from "@/widgets/cards";
 import { StatisticsChart } from "@/widgets/charts";
-import { ClockIcon, ClipboardIcon } from "@heroicons/react/24/solid";
+import { ClockIcon, ClipboardIcon, CursorArrowRaysIcon, DocumentTextIcon } from "@heroicons/react/24/solid";
 import axios from "axios";
 import { prepareChartData } from "@/data/prepareChartData";
 import PreviewPage from "./preview/PreviewPage";
@@ -46,7 +46,7 @@ export function Home() {
         withCredentials: true
       });
       setBusinessData(response.data);
-      console.log(response.data)
+      // console.log(response.data)
     };
     getBusinessData();
     getLogData();
@@ -83,7 +83,7 @@ export function Home() {
             title={`${allTimeLogData[0]?.business__business_name} - Todays clicks stats`}
             value={0}
             color="gray"
-            icon={React.createElement(ClipboardIcon, {
+            icon={React.createElement(CursorArrowRaysIcon, {
               className: "w-6 h-6 text-white",
             })}
             footer={
@@ -97,7 +97,7 @@ export function Home() {
             title={`${allTimeLogData[0]?.business__business_name} - Todays Itinerary rec' stats`}
             value={0}
             color="gray"
-            icon={React.createElement(ClipboardIcon, {
+            icon={React.createElement(DocumentTextIcon, {
               className: "w-6 h-6 text-white",
             })}
             footer={

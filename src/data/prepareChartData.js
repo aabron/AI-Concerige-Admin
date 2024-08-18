@@ -11,7 +11,6 @@ export const prepareChartData = (data, eventType) => {
       countsByDate[date] = 0;
     }
     countsByDate[date] += item.count;
-    // console.log(item)
 
     if (!countsByName[item.business__name]) {
       countsByName[item.business__name] = 0;
@@ -19,14 +18,21 @@ export const prepareChartData = (data, eventType) => {
     countsByName[item.business__name] += item.count;
   });
 
+  // Sort countsByDate by date keys
+  const sortedDates = Object.keys(countsByDate).sort((a, b) => new Date(a) - new Date(b));
+  const sortedCountsByDate = sortedDates.reduce((acc, date) => {
+    acc[date] = countsByDate[date];
+    return acc;
+  }, {});
+
   const series = [
     {
       name: eventType,
-      data: Object.values(countsByDate),
+      data: Object.values(sortedCountsByDate),
     },
   ];
 
-  const categories = Object.keys(countsByDate);
+  const categories = Object.keys(sortedCountsByDate);
 
   return {
     type: "line",
@@ -44,9 +50,19 @@ export const prepareChartData = (data, eventType) => {
       xaxis: {
         ...chartsConfig.xaxis,
         categories: categories,
+        labels: {
+          rotate: -45,
+          rotateAlways: true,
+          formatter: function (value) {
+            return new Date(value).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+          },
+        },
+      },
+      yaxis: {
+        min: 0,
+        tickAmount: 5,
+        forceNiceScale: true,
       },
     },
   };
 };
-
-  

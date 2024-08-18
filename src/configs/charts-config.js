@@ -19,26 +19,34 @@ export const chartsConfig = {
     },
     labels: {
       style: {
-        colors: "#37474f",
+        colors: "#D3D3D3",
         fontSize: "13px",
         fontFamily: "inherit",
         fontWeight: 300,
+      },
+      rotate: -45,
+      rotateAlways: true,
+      formatter: function (value) {
+        return new Date(value).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
       },
     },
   },
   yaxis: {
     labels: {
       style: {
-        colors: "#37474f",
+        colors: "#D3D3D3",
         fontSize: "13px",
         fontFamily: "inherit",
         fontWeight: 300,
       },
     },
+    min: 0,
+    tickAmount: 5,
+    forceNiceScale: true,
   },
   grid: {
     show: true,
-    borderColor: "#37474f",
+    borderColor: "#D3D3D3",
     strokeDashArray: 5,
     xaxis: {
       lines: {
