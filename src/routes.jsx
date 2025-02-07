@@ -21,7 +21,7 @@ const icon = {
   className: "w-5 h-5 text-inherit",
 };
 
-const getBusinessData = async () => {
+export const getBusinessData = async () => {
   const response = await axios.get('https://ai-concierge-main-0b4b3d25a902.herokuapp.com/api/getUserBusinessData/', {
       headers: {
       'Authorization': `Token ${localStorage.getItem('token')}`
@@ -30,10 +30,7 @@ const getBusinessData = async () => {
   });
   // console.log('User business data:', response.data)
   return response.data[0];
-  
 };
-
-let response = await getBusinessData();
 
 export const routes = [
   {
@@ -44,35 +41,36 @@ export const routes = [
         name: "dashboard",
         path: "/home",
         element: <Home />,
-        disabled: response ? false : true,
+        disabled: false,
       },
       {
         icon: <UserCircleIcon {...icon} />,
         name: "profile",
         path: "/profile",
         element: <Profile />,
-        disabled: response ? false : true,
+        disabled: false,
       },
       {
-        icon: response ? <PencilSquareIcon {...icon} /> : <TableCellsIcon {...icon} />,
-        name: response ? "Edit Business" : "Add Business",
-        path: response ? "/EditBusiness" : "/AddBusiness",
-        element: response ? <EditBusiness/> : <AddBusiness />,
-        disabled: response ? false : true,
+        icon: <PencilSquareIcon {...icon} /> ,
+        name: "Edit Business" ,
+        path: "/EditBusiness" ,
+        element: <EditBusiness/> ,
+        disabled: false,
       },
       {
         icon: <TableCellsIcon {...icon} />,
         name: "Add Business",
         path: "/AddBusiness",
         element: <AddBusiness />,
-        disabled: response?.author === 3 ? false : true,
+        disabled: false,
       },
       {
         icon: <RectangleStackIcon {...icon} />,
         name: "Ad Banner",
         path: "/adBanner",
         element: <AddBanner />,
-        disabled: response ? false : true,
+        disabled: false,
+
       },
       {
         icon: <BuildingStorefrontIcon {...icon}/>,
@@ -91,9 +89,6 @@ export const routes = [
     ],
   }
 ];
-
-
-
 
 
 export default routes;
