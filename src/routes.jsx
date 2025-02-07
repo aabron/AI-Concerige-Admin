@@ -33,7 +33,7 @@ const getBusinessData = async () => {
   
 };
 
-let response = getBusinessData();
+let response = await getBusinessData();
 
 export const routes = [
   {
@@ -60,13 +60,13 @@ export const routes = [
         element: response ? <EditBusiness/> : <AddBusiness />,
         disabled: response ? false : true,
       },
-      // {
-      //   icon: <TableCellsIcon {...icon} />,
-      //   name: "Add Business",
-      //   path: "/AddBusiness",
-      //   element: <AddBusiness />,
-      //   disabled: response ? false : true,
-      // },
+      {
+        icon: <TableCellsIcon {...icon} />,
+        name: "Add Business",
+        path: "/AddBusiness",
+        element: <AddBusiness />,
+        disabled: response?.author === 3 ? false : true,
+      },
       {
         icon: <RectangleStackIcon {...icon} />,
         name: "Ad Banner",
@@ -91,5 +91,9 @@ export const routes = [
     ],
   }
 ];
+
+
+
+
 
 export default routes;
