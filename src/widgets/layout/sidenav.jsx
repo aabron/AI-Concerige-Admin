@@ -8,16 +8,24 @@ import {
   Typography,
 } from "@material-tailwind/react";
 import { useMaterialTailwindController, setOpenSidenav } from "@/context";
+import { getBusinessData } from "@/routes";
+import { useState } from "react";
 
 export function Sidenav({ brandImg, brandName, routes }) {
   const [controller, dispatch] = useMaterialTailwindController();
   const { sidenavColor, sidenavType, openSidenav } = controller;
+  const [author, setAuthor] = useState(null);
+  const response = getBusinessData();
+  Promise.resolve(response).then((data) => {
+    setAuthor(data?.author);
+  })
   const sidenavTypes = {
     dark: "bg-gradient-to-br from-gray-800 to-gray-900",
     white: "bg-white shadow-sm",
     transparent: "bg-transparent",
   };
 
+  console.log(author);
   return (
     <aside
       className={`${sidenavTypes[sidenavType]} ${
@@ -49,21 +57,14 @@ export function Sidenav({ brandImg, brandName, routes }) {
       <div className="m-4">
         {routes.map(({ layout, title, pages }, key) => (
           <ul key={key} className="mb-4 flex flex-col gap-1">
-            {title && (
-              <li className="mx-3.5 mt-4 mb-2">
-                <Typography
-                  variant="small"
-                  color={sidenavType === "dark" ? "white" : "blue-gray"}
-                  className="font-black uppercase opacity-75"
-                >
-                  {title}
-                </Typography>
-              </li>
-            )}
             {pages.map(({ icon, name, path, disabled }) => (
+              (path === "/AddBusiness" && author !== 3) ? (
+                null
+              ) : (
               <li key={name}>
                 {disabled ? (
                   <Button
+
                     color={"white"}
                     className="flex items-center gap-4 px-4 capitalize disabled:text-gray-700"
                     fullWidth
@@ -105,11 +106,12 @@ export function Sidenav({ brandImg, brandName, routes }) {
                 </NavLink>
                 )}
               </li>
-            ))}
+            )))}
           </ul>
         ))}
       </div>
     </aside>
+
   );
 }
 
