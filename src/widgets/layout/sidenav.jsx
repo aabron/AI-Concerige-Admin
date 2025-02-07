@@ -25,7 +25,6 @@ export function Sidenav({ brandImg, brandName, routes }) {
     transparent: "bg-transparent",
   };
 
-  console.log(author);
   return (
     <aside
       className={`${sidenavTypes[sidenavType]} ${
@@ -64,7 +63,6 @@ export function Sidenav({ brandImg, brandName, routes }) {
               <li key={name}>
                 {disabled ? (
                   <Button
-
                     color={"white"}
                     className="flex items-center gap-4 px-4 capitalize disabled:text-gray-700"
                     fullWidth
