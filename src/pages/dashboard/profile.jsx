@@ -4,30 +4,65 @@ import {
   Avatar,
   Typography,
   Switch,
+  Button,
+  IconButton,
 } from "@material-tailwind/react";
 import { Link } from "react-router-dom";
 import { ProfileInfoCard, MessageCard } from "@/widgets/cards";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import React from "react";
+import { XMarkIcon } from "@heroicons/react/24/outline";
+import {
+  useMaterialTailwindController,
+  setOpenConfigurator,
+  setSidenavColor,
+  setSidenavType,
+  setFixedNavbar,
+} from "@/context";
+
+function formatNumber(number, decPlaces) {
+  decPlaces = Math.pow(10, decPlaces);
+
+  const abbrev = ["K", "M", "B", "T"];
+
+  for (let i = abbrev.length - 1; i >= 0; i--) {
+    var size = Math.pow(10, (i + 1) * 3);
+
+    if (size <= number) {
+      number = Math.round((number * decPlaces) / size) / decPlaces;
+
+      if (number == 1000 && i < abbrev.length - 1) {
+        number = 1;
+        i++;
+      }
+
+      number += abbrev[i];
+
+      break;
+    }
+  }
+
+  return number;
+}
 
 export function Profile() {
-
+  const [controller, dispatch] = useMaterialTailwindController();
+  const { openConfigurator, sidenavColor, sidenavType, fixedNavbar } =
+    controller;
   const [profileData, setProfileData] = useState([]);
   const [user, setUser] = useState([]);
-  const [emailSettings, setEmailSettings] = useState([
-    {
-      checked: false,
-      label: "Email Me When Clicked"
-    },
-    {
-      checked: false,
-      label: "Email Me When Recommended"
-    },
-    {
-      checked: false,
-      label: "Email Me When Recommended in an Itinerary"
-    },
-  ])
+  const [emailSettings, setEmailSettings] = useState([]);
+  const [businessData, setBusinessData] = useState([]);
+  
+  const sidenavColors = {
+    white: "from-gray-100 to-gray-100 border-gray-200",
+    dark: "from-black to-black border-gray-200",
+    green: "from-green-400 to-green-600",
+    orange: "from-orange-400 to-orange-600",
+    red: "from-red-400 to-red-600",
+    pink: "from-pink-400 to-pink-600",
+  };
 
   useEffect(() => {
     const getProfileData = async () => {
@@ -54,6 +89,10 @@ export function Profile() {
               checked: response.data[0].email_when_itinerary_recommended,
               label: "Email Me When Recommended in an Itinerary"
             },
+            {
+              checked: true,
+              label: "Send me the monthly email with my businesses statistics for the month"
+            },
           ])
           setProfileData(response.data[0])
         })
@@ -71,17 +110,29 @@ export function Profile() {
         withCredentials: true,
       })
         .then(response => {
-          console.log(response.data);
+          // console.log(response.data);
           setUser(response.data);
         })
         .catch(error => {
           console.error('Error getting user:', error);
         });
     };
-
+    const getBusinessData = async () => {
+      const response = await axios.get('https://ai-concierge-main-0b4b3d25a902.herokuapp.com/api/getUserBusinessData/', {
+        headers: {
+          'Authorization': `Token ${localStorage.getItem('token')}`
+        },
+        withCredentials: true
+      });
+      setBusinessData(response.data[0]);
+      // console.log(response.data)
+    };
+    getBusinessData();
     getUserData();
     getProfileData();
   }, [])
+
+  
 
   const handleChange = async (label, checked) => {
     console.log(label, checked);
@@ -162,23 +213,31 @@ export function Profile() {
                 <Typography variant="h5" color="blue-gray" className="mb-1">
                   {user?.username}
                 </Typography>
-                <Typography
-                  variant="small"
+                <div className="flex items-center gap-2 flex-row">
+                  <Typography
+                    variant="small"
                   className="font-normal text-blue-gray-600"
                 >
                   {user?.email}
                 </Typography>
+                <Typography
+                    variant="small"
+                  className="font-normal text-blue-gray-600"
+                >
+                  My Business: {businessData?.business_name}
+                </Typography>
+                </div>
               </div>
             </div>
           </div>
           <div className="gird-cols-1 mb-12 grid gap-12 px-4 lg:grid-cols-2 xl:grid-cols-3">
             <div>
-              <Typography variant="h6" color="blue-gray" className="mb-3">
+              <Typography variant="h5" color="blue-gray" className="">
                 Platform Settings
               </Typography>
               <div className="flex flex-col gap-12">
                 <div>
-                  <Typography className="mb-4 block text-xs font-semibold uppercase text-blue-gray-500">
+                  <Typography className="mb-4 block font-normal text-blue-gray-500">
                     Account
                   </Typography>
                   <div className="flex flex-col gap-6">
@@ -199,30 +258,74 @@ export function Profile() {
               </div>
             </div>
             <div className="col-span-2">
-              <div className="flex flex-col w-full h-auto justify-center items-center">
-                <Typography variant="h6" color="blue-gray" className="mb-3">
-                  Your Current Plan
-                  {/* put stripe logo here */}
-                </Typography>
-                <div className="shadow-md max-w-6xl border-2 border-blue-gray-100 px-24 py-8 rounded-lg text-center">
-                  <Typography variant="h5" color="blue-gray" className="mb-3">
-                    Basic
+              <div className="flex items-start justify-between px-6 pb-6">
+                <div>
+                  <Typography variant="h5" color="blue-gray">
+                    Dashboard Configurator
                   </Typography>
-                  <Typography variant="h6" color="blue-gray" className="mb-3 text-left">
-                    Items:
+                  <Typography className="font-normal text-blue-gray-600">
+                    See our dashboard options.
                   </Typography>
-                  <div>
-                    {/* stripeData.map(({planData, key, value})) */}
-                    <Typography variant="h9" color="blue-gray" className="mb-3 text-left">
-                      1x Business Plan.............................$100 {/* get data from stripe api request for here so it will be <var>.map(<data>, ....) */}
-                    </Typography>
-                    <Typography variant="h9" color="blue-gray" className="mb-3 text-left">
-                      1x Ad Banner....................................$20  {/* get data from stripe api request for here so it will be <var>.map(<data>, ....) */}
-                    </Typography>
-                    <Typography variant="h9" color="blue-gray" className="mb-3 text-left">
-                      Next Payment Date: 7/31/2024  {/* get data from stripe api request for here so it will be <var>.map(<data>, ....) */}
-                    </Typography>
+                </div>
+              </div>
+              <div className="py-4 px-6">
+                <div className="mb-12">
+                  <Typography variant="h6" color="blue-gray">
+                    Sidenav Colors
+                  </Typography>
+                  <div className="mt-3 flex items-center gap-2">
+                    {Object.keys(sidenavColors).map((color) => (
+                      <span
+                        key={color}
+                        className={`h-6 w-6 cursor-pointer rounded-full border bg-gradient-to-br transition-transform hover:scale-105 ${sidenavColors[color]
+                          } ${sidenavColor === color ? "border-black" : "border-transparent"
+                          }`}
+                        onClick={() => setSidenavColor(dispatch, color)}
+                      />
+                    ))}
                   </div>
+                </div>
+                <div className="mb-12">
+                  <Typography variant="h6" color="blue-gray">
+                    Sidenav Types
+                  </Typography>
+                  <Typography variant="small" color="gray">
+                    Choose between 3 different sidenav types.
+                  </Typography>
+                  <div className="mt-3 flex items-center gap-2">
+                    <Button
+                      variant={sidenavType === "dark" ? "gradient" : "outlined"}
+                      onClick={() => setSidenavType(dispatch, "dark")}
+                    >
+                      Dark
+                    </Button>
+                    <Button
+                      variant={sidenavType === "transparent" ? "gradient" : "outlined"}
+                      onClick={() => setSidenavType(dispatch, "transparent")}
+                    >
+                      Transparent
+                    </Button>
+                    <Button
+                      variant={sidenavType === "white" ? "gradient" : "outlined"}
+                      onClick={() => setSidenavType(dispatch, "white")}
+                    >
+                      White
+                    </Button>
+                  </div>
+                </div>
+                <div className="mb-12">
+                  <hr />
+                  <div className="flex items-center justify-between py-5">
+                    <Typography variant="h6" color="blue-gray">
+                      Navbar Fixed
+                    </Typography>
+                    <Switch
+                      id="navbar-fixed"
+                      value={fixedNavbar}
+                      onChange={() => setFixedNavbar(dispatch, !fixedNavbar)}
+                    />
+                  </div>
+                  <hr />
                 </div>
               </div>
             </div>
